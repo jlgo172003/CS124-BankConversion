@@ -1,0 +1,6 @@
+bin/
+bankSetup.ini
+defaultData.bnk
+.project
+.classpath
+.settings
