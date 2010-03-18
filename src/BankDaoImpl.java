@@ -50,6 +50,27 @@ public class BankDaoImpl implements BankDao {
 
 	@Override
 	public Bank getBank(String bankName) {
+		Session session = null;
+        Transaction tx = null;
+        
+        try 
+        {
+            session = SessionFactorySingleton.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            
+            Query q = session.createQuery("from Bank where name = ? ");
+            q.setParameter(0, bankName);
+            return (Bank)q.uniqueResult();
+        }
+        catch(HibernateException ex) 
+        {
+            ex.printStackTrace();
+            tx.rollback();
+        } 
+        finally 
+        {
+            session.close();
+        }
 		return null;
 	}
 
@@ -80,6 +101,7 @@ public class BankDaoImpl implements BankDao {
 	
 	@Override
 	public BankAccount getBankAccount(String bankName, String accountName) {
+		
 		return null;
 	}
 
