@@ -54,10 +54,36 @@ public class BankDaoImpl implements BankDao {
 	}
 
 	@Override
+	public Bank getBank(Long id) {
+		Session session = null;
+        Transaction tx = null;
+        
+        try 
+        {
+            session = SessionFactorySingleton.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            
+            Bank b = (Bank) session.get(Bank.class, id);
+            return b;
+        }
+        catch(HibernateException ex) 
+        {
+            ex.printStackTrace();
+            tx.rollback();
+        } 
+        finally 
+        {
+            session.close();
+        }
+		return null;
+	}
+	
+	@Override
 	public BankAccount getBankAccount(String bankName, String accountName) {
 		return null;
 	}
 
+	
 	@Override
 	public void save(Bank b) {
 		Session session = null;
