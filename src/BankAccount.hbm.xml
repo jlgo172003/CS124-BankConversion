@@ -1,7 +1,22 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
 <hibernate-mapping>
+
+<class name="BankAccount" table="BANK_ACCOUNT_TABLE">
+
+<id name="id" column="ID">
+	<generator class="native"/>
+</id>
+
+<property name="accountName" type="string" column="BANK_ACCOUNT_NAME"/>
+<property name="balance" type="double" column="BALANCE"/>
+<property name="pin" type="string" column="PIN"/>
+
+
+			 
+</class>
 
 </hibernate-mapping>

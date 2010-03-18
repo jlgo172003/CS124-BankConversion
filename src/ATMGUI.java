@@ -48,7 +48,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
         this.setTitle("ATM GUI");
         this.id = id;
         this.bank = bank;
-        this.bankName = bank.getBankName();
+        this.bankName = "XD";//bank.getBankName();
         changeButtonState(false);
         this.addWindowListener(new WindowAdapter()
         {

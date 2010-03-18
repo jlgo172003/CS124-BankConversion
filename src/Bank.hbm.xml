@@ -11,20 +11,17 @@
 	<generator class="native"/>
 </id>
 
+<property name="name" type="string" column="BANK_NAME"/>
 
-<list name="wheels"
+
+<list name="bal"
        cascade="all"
        lazy="true">
-	<key column="WHEEL_LIST"/>
+	<key column="BANK_ACCOUNT_LIST"/>
 	<index column="idx" />
-	<one-to-many class="Wheel"/>
+	<one-to-many class="BankAccount"/>
 </list>
 
-<many-to-one name="spareTire"
-     		 cascade="all"
-			 column="SPARE_TIRE"
-			 lazy="false"
-			 class="Wheel"/>
 			 
 </class>
 

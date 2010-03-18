@@ -9,6 +9,7 @@ public class SingletonFactory {
 	private Transfer c_transfer;
 	private CreateBankAccount c_createbankaccount;
 	private RemoveBankAccount c_removebankaccount;
+	private CreateBank c_createbank;
 	
 	private SingletonFactory() {
 		c_getbalance = new GetBalance();
@@ -17,6 +18,7 @@ public class SingletonFactory {
 		c_transfer = new Transfer();
 		c_createbankaccount = new CreateBankAccount();
 		c_removebankaccount = new RemoveBankAccount();
+		c_createbank = new CreateBank();
 	}
 
 	public static SingletonFactory getInstance() {
@@ -30,7 +32,7 @@ public class SingletonFactory {
 	public Command create ( String s ) {
 		String temp[] = s.split( " " );
 		
-		if( temp[0].equals( "GetBalance" ) ) {
+		/*if( temp[0].equals( "GetBalance" ) ) {
 			GetBalance gb = (GetBalance) c_getbalance.clone();
 			gb.setParams( bal, temp[1], temp[2] );
 			return gb;
@@ -54,17 +56,23 @@ public class SingletonFactory {
 			return t;
 		}
 		
-		else if( temp[0].equals( "CreateBankAccount" ) ) {
+		else */if( temp[0].equals( "CreateBankAccount" ) ) {
 			CreateBankAccount cba = (CreateBankAccount) c_createbankaccount.clone();
-			cba.setParams( bal, temp[1], temp[2], temp[3] );
+			cba.setParams( temp[1], temp[2], temp[3], temp[4] );
 			return cba;
 		}
 		
-		else if( temp[0].equals( "RemoveBankAccount" ) ) {
+		else if ( temp[0].equals( "CreateBank" ) ) {
+			CreateBank cb = (CreateBank) c_createbank.clone();
+			cb.setParams( temp[1]);
+			return cb;
+		}
+		
+		/*else if( temp[0].equals( "RemoveBankAccount" ) ) {
 			RemoveBankAccount rba = (RemoveBankAccount) c_removebankaccount.clone();
 			rba.setParams( bal, temp[1] );
 			return rba;
-		}
+		}*/
 		return null;
 		
 	}

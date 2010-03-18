@@ -35,7 +35,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     private JLabel loggedAs = new JLabel();
     
     private String id = "";
-    private BankDriver bank = null;
+    private BankDriver bankdriver = null;
     
     /**
      * calls the init() method and frame-specific code
@@ -46,7 +46,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
         this.setSize(500,300); 
         this.setTitle("Teller GUI");
         this.id = id;
-        this.bank = bank;
+        this.bankdriver = bank;
         this.changeButtonState(false);
         this.addWindowListener(new WindowAdapter()
         {
@@ -207,7 +207,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
      */
     public void balance()
     {
-        double x = bank.getBalance(accountName, pin );
+        double x = bankdriver.getBalance(accountName, pin );
         if (!Double.isNaN(x))
         {
             screen.append("Balance: " + x + "\n");
@@ -242,7 +242,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
             {
                 tempPin = input.getText();
                 screen.append("PIN: " + tempPin + "\n");
-                if (bank.checkAccount(tempName, tempPin))
+                if (bankdriver.checkAccount(tempName, tempPin))
                 {
                     accountName = tempName;
                     pin = tempPin;
@@ -447,7 +447,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                 	//checks if balance is a double
                     balance = Double.parseDouble((String)input.getText());
                     screen.append("Balance: " + balance + "\n");
-                    boolean success = bank.createBankAccount(tempName, balance, tempPin);
+                    boolean success = bankdriver.createBankAccount(tempName, balance, tempPin);
                     if (success)
                     {
                         accountName = tempName;
@@ -571,7 +571,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                                      double balance, 
                                      String pin)
     {
-        return bank.createBankAccount(name, balance, pin);
+        return bankdriver.createBankAccount(name, balance, pin);
     }
 	
 	/**
@@ -579,7 +579,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
 	 */
     public boolean removeBankAccount(String name)
     {
-        return bank.removeBankAccount(name);
+        return bankdriver.removeBankAccount(name);
 
     }      
     
@@ -588,7 +588,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
      */    
     public boolean checkBank(String bankName)
     {
-        if (!bank.getBankName().equalsIgnoreCase(bankName))
+        if (!bankdriver.getBankName().equalsIgnoreCase(bankName))
         {
             screen.append("MULTIPLE BANKS NOT CURRENTLY SUPPORTED\n");
             return false;            
@@ -603,7 +603,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     public double getBalance(String accountName, 
                              String pin )
     {
-        return bank.getBalance(accountName, pin);
+        return bankdriver.getBalance(accountName, pin);
     }
 
 	/**
@@ -612,7 +612,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     public boolean deposit(String accountName, 
                            double amount )
     {
-        return bank.deposit(accountName, amount);
+        return bankdriver.deposit(accountName, amount);
     }
     
     /**
@@ -622,7 +622,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             String pin, 
                             double amount )
     {
-        return bank.withdraw(accountName, pin, amount);
+        return bankdriver.withdraw(accountName, pin, amount);
     }
     
 	/**
@@ -647,6 +647,6 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             String destAccountName, 
                             double amount )
     {
-        return bank.transfer(srcAccountName, srcPin, destAccountName, amount);
+        return bankdriver.transfer(srcAccountName, srcPin, destAccountName, amount);
     }
 }

@@ -9,8 +9,37 @@ import java.io.*;
 
 public class BankAccount implements Serializable
 {
-    private String accountName;
-    private double balance = 0;
+	private Long id;
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	private String accountName;
+    public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	public String getPin() {
+		return pin;
+	}
+
+	public void setPin(String pin) {
+		this.pin = pin;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	private double balance = 0;
     private String pin;
     
     /**

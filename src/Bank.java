@@ -1,6 +1,13 @@
 import java.util.*;
 
 public class Bank {
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	private Long id;
 	private List<BankAccount> bal;
 	private String name;
 	public Bank() {

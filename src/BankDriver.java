@@ -25,10 +25,10 @@ public class BankDriver
 	private BankFacade facade;
 	private String bankName;
 	//constructor
-	public void setBank(String bankname) {
+	/*public void setBank(String bankname) {
 		facade.setBank(bankName);
 	
-	}
+	}*/
 	/*public BankDriver(String bankName)
 	{
 		this.bankName = bankName;
@@ -38,14 +38,19 @@ public class BankDriver
 		facade = BankFacade.getInstance();
 		//facade.init(bankName);
 	}
+	public BankDriver() {
+		init();		
+		
+	}
 	
-	public BankDriver( String bankName, String macro ) {
-		/*facade = BankFacade.getInstance();
-		facade.init(bankName);
+	public BankDriver(String macro ) {
+		//facade = BankFacade.getInstance();
+		//facade.init(bankName);
+		init();
 		try {
 			facade.doMacro( macro );
 		}
-		catch (Exception e) { System.out.println( "ERROR OCCURED" ); }*/
+		catch (Exception e) { System.out.println( "ERROR OCCURED" ); }
 		
 	}
 	public String getBankName()
@@ -97,10 +102,38 @@ public class BankDriver
 	/**
 	 * The main method needed to start application
 	 */
+	
+	
+	
+	public int showMenu() {
+		return facade.showMenu();
+		
+	}
+	
     public static void main(String[] args)
     {
-		// instantiate a Bank
-		String name = null;
+    	/**Todo:
+    	 * setup opening of ini file
+    	 */
+    	
+    	BankDriver bankdriver=new BankDriver();
+    	
+    	int command=bankdriver.showMenu();
+    	
+    	if (command==0) return;
+    	
+    	bankdriver.addTeller(new TellerGUI("teller1", bankdriver));
+    	bankdriver.addTeller(new TellerGUI("teller2", bankdriver));
+		// add 2 Atms
+    	bankdriver.addATM(new ATMGUI("atm1", bankdriver));
+    	bankdriver.addATM(new ATMGUI("atm2", bankdriver));
+		
+    	showGUIs(bankdriver.tellers);
+		showGUIs(bankdriver.atms);
+		//System.out.println();
+		
+    	// instantiate a Bank
+		/*String name = null;
 		try
 		{
 		    name = args[0];
@@ -121,7 +154,7 @@ public class BankDriver
 		// make GUIs visible
 		showGUIs(bank.tellers);
 		showGUIs(bank.atms);
-		showMessage();
+		showMessage();*/
     }
 	    
     	/**

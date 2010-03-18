@@ -1,3 +1,5 @@
+
+
 public interface Command {
 
 	public Result execute();
