@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+	<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+	
+		<!-- required JDBC information -->
+		<property name="connection.username">testuser</property>
+		<property name="connection.password">password</property>
+		<property name="connection.url">jdbc:mysql://localhost/test</property>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+		<!-- required Hibernate information -->
+
+		<!-- what database/SQL dialect is going to be used -->
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+		<!-- check to create/update tables each time hibernate loads up -->
+		<property name="hbm2ddl.auto">update</property>
+
+		<!-- see the SQL statements Hibernate generates to talk to the DB -->
+		<property name="show_sql">true</property>
+			
+		<mapping resource="Bank.hbm.xml"/>
+		<mapping resource="BankAccount.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>
