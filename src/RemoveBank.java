@@ -1,5 +1,5 @@
 
-public class DeleteBank implements Command,Cloneable {
+public class RemoveBank implements Command,Cloneable {
 
 	private String bankName;
 	public void setParams ( String b) {

@@ -10,7 +10,7 @@ public class SingletonFactory {
 	private CreateBankAccount c_createbankaccount;
 	private RemoveBankAccount c_removebankaccount;
 	private CreateBank c_createbank;
-	private DeleteBank c_deletebank;
+	private RemoveBank c_removebank;
 	
 	private SingletonFactory() {
 		c_getbalance = new GetBalance();
@@ -20,7 +20,7 @@ public class SingletonFactory {
 		c_createbankaccount = new CreateBankAccount();
 		c_removebankaccount = new RemoveBankAccount();
 		c_createbank = new CreateBank();
-		c_deletebank = new DeleteBank();
+		c_removebank = new RemoveBank();
 	}
 
 	public static SingletonFactory getInstance() {
@@ -70,7 +70,7 @@ public class SingletonFactory {
 			return cb;
 		}
 		else if ( temp[0].equals( "RemoveBank" ) ) {
-			DeleteBank cb = (DeleteBank) c_deletebank.clone();
+			RemoveBank cb = (RemoveBank) c_removebank.clone();
 			cb.setParams( temp[1]);
 			return cb;
 		}		
