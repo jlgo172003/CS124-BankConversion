@@ -32,10 +32,11 @@ public class CommandThread extends Thread {
 		while (true) {
 			while (!commands.isEmpty())
 				commands.remove().execute();
-			System.out.println("running");
 			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {}
+				Thread.sleep(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	//pub

@@ -26,25 +26,12 @@ public class BankDriver
 	private String bankName;
 	
 	public BankDriver() {
-		init();		
-		/**
-		 * thread here?
-		 */
+		init();	
 	}
 	
 	public BankDriver(String macro ) {
 		init();
 		facade.doMacro(macro);
-		/*try {
-			facade.doMacro( macro );
-		}
-		catch (FileNotFoundException e){
-			
-		}
-		catch (Exception e) {
-			System.out.println("Error occured while doing macro \n Details:" ); 
-			e.printStackTrace();
-		}*/
 	}
 
 	public void init() {

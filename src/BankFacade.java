@@ -32,7 +32,7 @@ public class BankFacade {
 	//init method
 	public void setBank( String bankName) {
 		this.bankName=bankName;
-		JOptionPane.showMessageDialog(null, "Bank set to "+bankName);
+		JOptionPane.showMessageDialog(null, "Bank tellers set to "+bankName);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -82,9 +82,9 @@ public class BankFacade {
 		//return result;
 	}
 	
-	public boolean deleteBank(String bankName)
+	public boolean removeBank(String bankName)
 	{
-		String param = String.format("DeleteBank %s", bankName);
+		String param = String.format("RemoveBank %s", bankName);
 		Command c =  factory.create(param);
 		boolean result = (c.execute().getB());
 		return result;
@@ -190,21 +190,24 @@ public class BankFacade {
 	public void doMacro( String macro ) {
 		try {
 			Scanner in = new Scanner( new File( macro ) );
-			ArrayList<Command> comm = new ArrayList<Command>();
+			//ArrayList<Command> comm = new ArrayList<Command>();
 			while( in.hasNextLine() ) {
 				
 				String param = in.nextLine();
 				System.out.println( param );
-				comm.add( factory.create( param ) );
+				//comm.add( factory.create( param ) );
+				thread.addCommand(factory.create( param ));
 			}
 			
-			for( Command temp : comm ) {
-				temp.execute();
-			}
+			/*for( Command temp : comm ) {
+				thread.addCommand(temp);
+				//temp.execute();
+			}*/
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		} catch (Exception e) {
 			System.out.println("Error occured while reading file.");
+			e.printStackTrace();
 		}
 	}
 	
