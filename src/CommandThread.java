@@ -30,8 +30,10 @@ public class CommandThread extends Thread {
 		bankDao=new BankDaoImpl();
 
 		while (true) {
-			while (!commands.isEmpty())
-				commands.remove().execute();
+			while (!commands.isEmpty()) {
+				Command comm = commands.remove();
+				comm.signal(comm.execute());
+			}
 			try {
 				Thread.sleep(1);
 			} catch (Exception e) {

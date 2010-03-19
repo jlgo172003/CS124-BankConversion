@@ -207,11 +207,19 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
      */
     public void balance()
     {
-        double x = bankdriver.getBalance(null,accountName, pin );
-        if (!Double.isNaN(x))
-        {
-            screen.append("Balance: " + x + "\n");
-        }
+    	Listener l = new Listener() {
+    		public void signal( Result r ) {
+    			if( !Double.isNaN(r.getD()) ) {
+    				screen.append("Balance: " + r.getD() + "\n");
+    			}
+    		}
+    	} ;
+    	
+        bankdriver.getBalance(null,accountName, pin, l );
+        //if (!Double.isNaN(x))
+        //{
+       //    screen.append("Balance: " + x + "\n");
+       // }
     }
     
      /**
@@ -275,16 +283,22 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION)
                 {
-                    boolean success = withdraw( accountName, pin, amount );
-                    if (success)
-                    {
-                        screen.append("Withdrew Php " + amount + " from " + accountName + "\n");
-                        check = 0;
-                    }
-                    else
-                    {
-                        screen.append("Withdraw failed!\n");
-                    }
+                	Listener l = new Listener() {
+                		public void signal( Result r ) {
+                			if (r.getB())
+                            {
+                                screen.append("Withdrew Php " + amount + " from " + accountName + "\n");
+                                check = 0;
+                            }
+                            else
+                            {
+                                screen.append("Withdraw failed!\n");
+                            }
+                		}
+                	};
+                	
+                	withdraw(accountName, pin, amount, l);
+                    
                 }
             }
          
@@ -310,16 +324,22 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION)
                 {
-                    boolean success = deposit(accountName, amount );
-                    if (success)
-                    {
-                        screen.append("Deposited Php " + amount + " to " + accountName + "\n");
-                        check = 0;
-                    }
-                    else
-                    {
-                        screen.append("Despoit failed!\n");
-                    }
+                	Listener l = new Listener() {
+                		public void signal( Result r) {
+                			if (r.getB())
+                            {
+                                screen.append("Deposited Php " + amount + " to " + accountName + "\n");
+                                check = 0;
+                            }
+                            else
+                            {
+                                screen.append("Despoit failed!\n");
+                            }	
+                		}
+                	};
+                	
+                	deposit(accountName, amount, l );
+                    
                 }
              }
             catch (Exception e)
@@ -358,17 +378,22 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                     if (n == JOptionPane.YES_OPTION)
                     {
-                        boolean success = transfer(accountName, pin, destAccountName, amount );
-                        if (success)
-                        {
-                            screen.append("Transfered Php " + amount + " to " + destAccountName + "\n");
-                            check = 0;
-                			point = 0;
-                        }
-                        else
-                        {
-                            screen.append("Transfer failed!\n");
-                        }
+                    	Listener l = new Listener() {
+                    		public void signal(Result r) {
+                    			if (r.getB())
+                                {
+                                    screen.append("Transfered Php " + amount + " to " + destAccountName + "\n");
+                                    check = 0;
+                        			point = 0;
+                                }
+                                else
+                                {
+                                    screen.append("Transfer failed!\n");
+                                }
+                    		}
+                    	};
+                    	
+                        transfer(accountName, pin, destAccountName, amount, l );
                     }
                 }
          
@@ -387,7 +412,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
         //Continuation of removeAccount()
         else if(check == 5)
         {
-            String x = input.getText();
+            final String x = input.getText();
             if (!x.equals(""))
             {
             	//asks for confirmation
@@ -396,21 +421,27 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                     "Confirm", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION)
                 {
-                    boolean success = removeBankAccount(x);
-                    if (success)
-                    {
-                        screen.append(x + " was successfuly removed!.\n");
-                        if (x.equals(accountName))
-                        {
-                            loggedAs.setText("");
-                            changeButtonState(false);
-                        }
-                        check = 0;
-                    }
-                    else
-                    {
-                        screen.append(x + " was not removed!\n");
-                    }
+                	Listener l = new Listener() {
+                		
+                		public void signal( Result r ){
+                			if (r.getB())
+                            {
+                                screen.append(x + " was successfuly removed!.\n");
+                                if (x.equals(accountName))
+                                {
+                                    loggedAs.setText("");
+                                    changeButtonState(false);
+                                }
+                                check = 0;
+                            }
+                            else
+                            {
+                                screen.append(x + " was not removed!\n");
+                            }
+                		}
+                	};
+                    removeBankAccount(x, l);
+                    
                 }
             }
             input.setText("");
@@ -447,23 +478,29 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                 	//checks if balance is a double
                     balance = Double.parseDouble((String)input.getText());
                     screen.append("Balance: " + balance + "\n");
-                    boolean success = bankdriver.createBankAccount(null,tempName, balance, tempPin);
-                    if (success)
-                    {
-                        accountName = tempName;
-                        pin = tempPin;
-                        screen.append("Account successfully created!\n");
-                        changeButtonState(true);
-                        //displays current account in
-                        loggedAs.setText("Current account: " + accountName + "     ");
-                        ref = 0;
-                	    check = 0;
-                    }
-                    else
-                    {
-                        screen.append("An account with the same name (" 
-                                      + tempName + ") already exists!\n");
-                    }
+                    
+                    Listener l = new Listener() {
+                    	public void signal( Result r ) {
+                    		if (r.getB())
+                            {
+                                accountName = tempName;
+                                pin = tempPin;
+                                screen.append("Account successfully created!\n");
+                                changeButtonState(true);
+                                //displays current account in
+                                loggedAs.setText("Current account: " + accountName + "     ");
+                                ref = 0;
+                        	    check = 0;
+                            }
+                            else
+                            {
+                                screen.append("An account with the same name (" 
+                                              + tempName + ") already exists!\n");
+                            }
+                    	}
+                    
+                    };
+                    bankdriver.createBankAccount(null,tempName, balance, tempPin, l);
                 }
          
                 catch (Exception e)
@@ -568,19 +605,19 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     /**
      * Creates a new bank account 
      */
-    public boolean createBankAccount(String name, 
+    public void createBankAccount(String name, 
                                      double balance, 
-                                     String pin)
+                                     String pin, Listener l)
     {
-        return bankdriver.createBankAccount(null,name, balance, pin);
+        bankdriver.createBankAccount(null,name, balance, pin, l);
     }
 	
 	/**
 	 * removes an existing bank account
 	 */
-    public boolean removeBankAccount(String name)
+    public void removeBankAccount(String name, Listener l)
     {
-        return bankdriver.removeBankAccount(null,name);
+        bankdriver.removeBankAccount(null,name, l);
 
     }      
     
@@ -600,30 +637,33 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     
 	/**
 	 * Retrieves balance of current account
+	 * what does this do?? difference from balance()?-- Janssen
 	 */
     public double getBalance(String accountName, 
                              String pin )
     {
-        return bankdriver.getBalance(null,accountName, pin);
+    	return 0.0;
+        //return bankdriver.getBalance(null,accountName, pin);
     }
 
 	/**
 	 * Deposits a specific amount to the supplied accountName
 	 */
-    public boolean deposit(String accountName, 
-                           double amount )
+    public void deposit(String accountName, 
+                           double amount, Listener l )
     {
-        return bankdriver.deposit(null,accountName, amount);
+        bankdriver.deposit(null,accountName, amount, l);
     }
     
     /**
      * Withdraws a specific amount to the supplied accountName
      */
-    public boolean withdraw(String accountName, 
+    public void withdraw(String accountName, 
                             String pin, 
-                            double amount )
+                            double amount, Listener l)
     {
-        return bankdriver.withdraw(null,accountName, pin, amount);
+    	bankdriver.withdraw(null, accountName, pin, amount, l);
+        
     }
     
 	/**
@@ -643,11 +683,11 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     /**
 	 * Transfers a specified amount to a supplied destAccountName
 	 */
-    public boolean transfer(String srcAccountName, 
+    public void transfer(String srcAccountName, 
                             String srcPin, 
                             String destAccountName, 
-                            double amount )
+                            double amount, Listener l )
     {
-        return bankdriver.transfer(null,srcAccountName, srcPin, destAccountName, amount);
+        bankdriver.transfer(null,srcAccountName, srcPin, destAccountName, amount, l);
     }
 }

@@ -1,4 +1,4 @@
-public class Transfer implements Command, Cloneable {
+public class Transfer extends Command implements Cloneable {
 	//private BankAccountList list;
 	private String srcBankName;
 	private String srcAccountName;

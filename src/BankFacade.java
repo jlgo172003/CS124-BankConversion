@@ -82,34 +82,42 @@ public class BankFacade {
 		//return result;
 	}
 	
-	public boolean removeBank(String bankName)
+	public void removeBank(String bankName, Listener l)
 	{
 		String param = String.format("RemoveBank %s", bankName);
 		Command c =  factory.create(param);
-		boolean result = (c.execute().getB());
-		return result;
+		c.setListener(l);
+		thread.addCommand(c);
+		
+		//boolean result = (c.execute().getB());
+		//return result;
 	}
 	
 	
-	public boolean createBankAccount(String bankName,String name, double balance, String pin)
+	public void createBankAccount(String bankName,String name, double balance, String pin, Listener l)
 	{
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format("CreateBankAccount %s %s %f %s",bankName,name,balance,pin);
 		Command c = factory.create( param );
-		boolean result = (c.execute()).getB();
-		return result;
+		c.setListener(l);
+		thread.addCommand(c);
+		
+		//boolean result = (c.execute()).getB();
+		//return result;
 	}
 
 	/**
 	 * Removes an existing bank account given the ff information: name
 	 **/ 
-	public boolean removeBankAccount(String bankName,String name)
+	public void removeBankAccount(String bankName,String name, Listener l)
 	{
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format("RemoveBankAccount %s %s",bankName,name);
 		Command c = factory.create( param );
-		boolean result = (c.execute()).getB();
-		return result;
+		c.setListener(l);
+		thread.addCommand(c);
+		//boolean result = (c.execute()).getB();
+		//return result;
 	}
 
 	/**
@@ -124,26 +132,30 @@ public class BankFacade {
 	/**
 	* Returns the current balance of the account accountName.
 	*/
-	public double getBalance(String bankName, String accountName, String pin )
+	public void getBalance(String bankName, String accountName, String pin, Listener l )
 	{
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "GetBalance %s %s %s", bankName, accountName, pin );
 		Command c = factory.create( param );
-		return (c.execute() ).getD();
+		c.setListener(l);
+		thread.addCommand(c);
+		//return (c.execute() ).getD();
 	}
 
 	/**
 	* Deposits the amount to the account with the account name accountName;
 	* Returns true if successful, false if not
 	*/
-	public boolean deposit(String bankName, String accountName, double amount )
+	public void deposit(String bankName, String accountName, double amount, Listener l )
 	{
 
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Deposit %s %s %f", bankName, accountName, amount );
 		Command c = factory.create( param );
-		boolean b = (c.execute() ).getB();
-		return b;
+		c.setListener(l);
+		thread.addCommand(c);
+		//boolean b = (c.execute() ).getB();
+		//return b;
 
 
 	}
@@ -152,28 +164,32 @@ public class BankFacade {
 	* Withdraws the amount to the account with the account name accountName;
 	* Returns true if successful, false if not
 	*/
-	public boolean withdraw(String bankName, String accountName, String pin, double amount )
+	public void withdraw(String bankName, String accountName, String pin, double amount, Listener l )
 	{
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Withdraw %s %s %s %f", bankName, accountName, pin, amount );
 		Command c = factory.create( param );
-		boolean b = (c.execute() ).getB();
-		return b;
+		c.setListener(l);
+		thread.addCommand(c);
+		//boolean b = (c.execute() ).getB();
+		//return b;
 	}
 
 	/**
 	* Transfer the amount from the account srcAccountName to the account
 	* destAccountName. Returns true if successful, false if not.
 	*/
-	public boolean transfer(String bankName, String srcAccountName, String srcPin,
-		             String destAccountName, double amount )
+	public void transfer(String bankName, String srcAccountName, String srcPin,
+		             String destAccountName, double amount, Listener l )
 	{
 		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Transfer %s %s %s %s %s %f", bankName, srcAccountName, srcPin, bankName, destAccountName,  amount );
 		Command c = factory.create( param );
-		boolean b = (c.execute() ).getB();
+		c.setListener(l);
+		thread.addCommand(c);
+		//boolean b = (c.execute() ).getB();
 		//updateData();
-		return b;
+		//return b;
 	}
 
 	/**

@@ -1,4 +1,4 @@
-public class Withdraw implements Command, Cloneable {
+public class Withdraw extends Command implements Cloneable {
 	//private BankAccountList list;
 	private String bankName;
 	private String acctName;

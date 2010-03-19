@@ -1,5 +1,5 @@
 import java.util.*;
-public class CreateBank implements Command,Cloneable {
+public class CreateBank extends Command implements Cloneable {
 
 	private String bankName;
 	public void setParams ( String b) {

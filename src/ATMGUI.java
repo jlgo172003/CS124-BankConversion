@@ -35,7 +35,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     private Color color3 = new Color(255, 198, 8);
     
     private String id = "";
-    private BankDriver bankDriver = null;
+    private BankDriver bankdriver = null;
     private JLabel loggedAs = new JLabel();
     
     /**
@@ -47,7 +47,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
         this.setSize(500,300); 
         this.setTitle("ATM GUI");
         this.id = id;
-        this.bankDriver = bank;
+        this.bankdriver = bank;
         changeButtonState(false);
         this.addWindowListener(new WindowAdapter()
         {
@@ -133,11 +133,21 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
      */
     public void balance()  
     {
-        double x = bankDriver.getBalance(bankName,accountName, pin );
+    	Listener l = new Listener() {
+    		public void signal( Result r ) {
+    			if( !Double.isNaN(r.getD()) ) {
+    				area.append("Balance: " + r.getD() + "\n");
+    			}
+    		}
+    	} ;
+    	
+        bankdriver.getBalance(null,accountName, pin, l );
+        
+        /*double x = bankDriver.getBalance(bankName,accountName, pin );
         if (!Double.isNaN(x))
         {
             area.append("Your balance is: " + x + "\n");
-        }
+        }*/
     }
     
     /**
@@ -197,7 +207,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
             if(action == 1)
             {
                 String x = field.getText();
-                if (x.equalsIgnoreCase(bankDriver.getBankName()))
+                if (x.equalsIgnoreCase(bankdriver.getBankName()))
                 {
                     bankName = x;
                     area.append("Transacting with " + bankName + "\n");
@@ -235,7 +245,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
                 tempPin = x;
                 area.append("Your pin is " + tempPin + "\n");
                 //supposed to check the bank & account...but multiple banks aren't supported yet
-                if (bankDriver.checkAccount(bankName,tempName, tempPin))
+                if (bankdriver.checkAccount(bankName,tempName, tempPin))
                 {
                     accountName = tempName;
                     pin = tempPin;
@@ -268,15 +278,20 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION)
                 {
-                    boolean success = withdraw(bankName, accountName, pin, amount );                 
-                    if (success)
-                    {
-                        area.append("You withdrew Php " + amount + "\n");
-                    }
-                    else
-                    {
-                        area.append("Withdraw failed!\n");
-                    }
+                	Listener l = new Listener() {
+                		public void signal( Result r ) {
+                			if (r.getB())
+                            {
+                                area.append("Withdrew Php " + amount + " from " + accountName + "\n");
+                                check = 0;
+                            }
+                            else
+                            {
+                                area.append("Withdraw failed!\n");
+                            }
+                		}
+                	};
+                	withdraw( bankName, accountName, pin, amount, l);
                 }
             }
          
@@ -301,16 +316,21 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION)
                 {
-                    boolean success = deposit(bankName, accountName,amount );
-                    if (success)
-                    {
-                        area.append("You deposited Php " + amount + "\n");
-                        check = 0;
-                    }
-                    else
-                    {
-                        area.append("Deposit failed.\n");
-                    }
+                	Listener l = new Listener() {
+                		public void signal( Result r) {
+                			if (r.getB())
+                            {
+                                area.append("Deposited Php " + amount + " to " + accountName + "\n");
+                                check = 0;
+                            }
+                            else
+                            {
+                                area.append("Despoit failed!\n");
+                            }	
+                		}
+                	};
+                    deposit(bankName, accountName,amount, l );
+                    
                 }
             }
             catch (Exception e)
@@ -348,18 +368,23 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
                             "Confirm", JOptionPane.YES_NO_OPTION);
                     if (n == JOptionPane.YES_OPTION)
                     {
-                        boolean success = transfer(bankName, accountName, 
-                                                   pin, destAccountName, amount);
-                        if (success)
-                        {
-                        	area.append("You transfered Php " + amount + "\n");
-                        	check = 0;
-               			    point = 0;
-                        }
-                        else
-                        {
-                            area.append("Transfer failed!\n");
-                        }
+                    	Listener l = new Listener() {
+                    		public void signal(Result r) {
+                    			if (r.getB())
+                                {
+                                	area.append("You transfered Php " + amount + "\n");
+                                	check = 0;
+                       			    point = 0;
+                                }
+                                else
+                                {
+                                    area.append("Transfer failed!\n");
+                                }
+                    		}
+                    	};
+                        transfer(bankName, accountName, 
+                                                   pin, destAccountName, amount, l);
+                        
                     }
                 }
                 catch (Exception e)
@@ -446,7 +471,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
      */  
     public boolean checkBank(String bankName)
     {
-        if (!bankDriver.getBankName().equalsIgnoreCase(bankName))
+        if (!bankdriver.getBankName().equalsIgnoreCase(bankName))
         {
             area.append("MULTIPLE BANKS NOT CURRENTLY SUPPORTED\n");
             return false;            
@@ -464,6 +489,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     
     /**
 	 * Retrieves balance of current account
+	 * same question. difference with balance()?
 	 */
     public double getBalance(String bankName,
                              String accountName, 
@@ -471,7 +497,8 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     {
         if (checkBank(bankName))
         {
-            return bankDriver.getBalance(bankName,accountName, pin);
+        	return 0.0;
+            //return bankDriver.getBalance(bankName,accountName, pin);
         }
         else
         {
@@ -482,55 +509,44 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
 	/**
 	 * Deposits a specific amount to the supplied accountName
 	 */
-    public boolean deposit(String bankName,
+    public void deposit(String bankName,
                            String accountName, 
-                           double amount )
+                           double amount, Listener l )
     {
         if (checkBank(bankName))
         {
-            return bankDriver.deposit(bankName,accountName, amount);
-        }
-        else
-        {
-            return false;
+            bankdriver.deposit(bankName,accountName, amount, l);
         }
     }
     
     /**
      * Withdraws a specific amount to the supplied accountName
      */
-    public boolean withdraw(String bankName,
+    public void withdraw(String bankName,
                             String accountName, 
                             String pin, 
-                            double amount )
+                            double amount, Listener l )
     {
         if (checkBank(bankName))
         {
-            return bankDriver.withdraw(bankName,accountName, pin, amount);
+        	bankdriver.withdraw(bankName,accountName, pin, amount, l);
         }
-        else
-        {
-            return false;
-        }
+
     }
     
     /**
 	 * Transfers a specified amount to a supplied destAccountName given a 
 	 * destinationBank
 	 */
-    public boolean transfer(String bankName,
+    public void transfer(String bankName,
                             String srcAccountName, 
                             String srcPin,
                             String destAccountName, 
-                            double amount )
+                            double amount, Listener l )
     {
         if (checkBank(bankName))
         {
-            return bankDriver.transfer(bankName,srcAccountName, srcPin, destAccountName, amount);
-        }
-        else
-        {
-            return false;
+            bankdriver.transfer(bankName,srcAccountName, srcPin, destAccountName, amount, l);
         }
     }
 

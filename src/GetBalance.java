@@ -1,4 +1,4 @@
-public class GetBalance implements Command, Cloneable {
+public class GetBalance extends Command implements Cloneable {
 	private String bankName;
 	private String acctName;
 	private String pin;

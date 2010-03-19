@@ -8,26 +8,26 @@
 public interface TellerInterface
 {
     public String getTellerId();
-    public boolean createBankAccount(String name, 
+    public void createBankAccount(String name, 
                                      double balance, 
-                                     String pin);
+                                     String pin, Listener l);
 
-    public boolean removeBankAccount(String name);
+    public void removeBankAccount(String name, Listener l);
 
     public double getBalance(String accountName, 
                              String pin );
 
-    public boolean deposit(String accountName, 
-                           double amount );
+    public void deposit(String accountName, 
+                           double amount, Listener l );
 
-    public boolean withdraw(String accountName, 
+    public void withdraw(String accountName, 
                             String pin, 
-                            double amount );
+                            double amount, Listener l );
                             
-    public boolean transfer(String srcAccountName, 
+    public void transfer(String srcAccountName, 
                             String srcPin,
                             String destAccountName, 
-                            double amount );
+                            double amount, Listener l );
 
     public boolean transfer(String srcAccountName, 
                             String srcPin,

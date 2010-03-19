@@ -1,4 +1,4 @@
-public class Deposit implements Command, Cloneable {
+public class Deposit extends Command implements Cloneable {
 	//private BankAccountList list;
 	
 	private String bankName;

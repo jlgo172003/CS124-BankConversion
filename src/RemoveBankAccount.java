@@ -1,4 +1,4 @@
-public class RemoveBankAccount implements Command, Cloneable {
+public class RemoveBankAccount extends Command implements Cloneable {
 	private BankAccountList list;
 	private String bankName;
 	private String acctName;

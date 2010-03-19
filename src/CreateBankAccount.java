@@ -1,6 +1,6 @@
 import java.util.*;;
 
-public class CreateBankAccount implements Command, Cloneable {
+public class CreateBankAccount extends Command implements Cloneable {
 	//private BankAccountList list;
 	private String bankName;
 	private String acctName;

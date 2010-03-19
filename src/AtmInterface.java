@@ -12,20 +12,20 @@ public interface AtmInterface
                              String accountName, 
                              String pin );
 
-    public boolean deposit(String bankName,
+    public void deposit(String bankName,
                            String accountName, 
-                           double amount );
+                           double amount, Listener l );
 
-    public boolean withdraw(String bankName,
+    public void withdraw(String bankName,
                             String accountName, 
                             String pin, 
-                            double amount );
+                            double amount, Listener l );
                             
-    public boolean transfer(String bankName,
+    public void transfer(String bankName,
                             String srcAccountName, 
                             String srcPin,
                             String destAccountName, 
-                            double amount );
+                            double amount, Listener l );
 
     public boolean transfer(String bankName,
                             String srcAccountName, 
