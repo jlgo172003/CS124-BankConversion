@@ -1,5 +1,5 @@
-import java.util.*;
-public class CreateBank implements Command,Cloneable {
+
+public class DeleteBank implements Command,Cloneable {
 
 	private String bankName;
 	public void setParams ( String b) {
@@ -10,17 +10,14 @@ public class CreateBank implements Command,Cloneable {
 	public Result execute() {
 		Result r=new Result();
 
+		/*Bank b=bankDao.getBank(bankName);
+		bankDao.delete(b);
+		return true;*/
+		
 		BankDao bd=new BankDaoImpl();
 		Bank bank=bd.getBank(bankName);
-		if (bank==null) {
-			bank=new Bank();
-			List<BankAccount> bal=new ArrayList<BankAccount>();
-			bank.setName(bankName);
-			bank.setBal(bal);
-			bd.saveBank(bank);
-		}
-		
-		r.setB(bank==null);
+		bd.deleteBank(bank);
+		r.setB(bank!=null);
 
 		return r;
 	

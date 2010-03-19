@@ -1,29 +1,32 @@
 public class GetBalance implements Command, Cloneable {
-	
+	private String bankName;
 	private String acctName;
 	private String pin;
 	
-	public void setParams ( String a, String p) {
+	public void setParams ( String b, String a, String p) {
+		bankName = b;
 		acctName = a;
 		pin = p;
 	}
-
+	
+	/**
+	 * returns the balance, NaN if otherwise
+	 */
+	
 	public Result execute() {
-		/*BankAccount account = list.findAccount( acctName );
-        
-		Result r = new Result();
-		if ( account != null )
-		{
-			
-			r.setD( account.getBalance( pin ) );
+		Result r=new Result();
+		
+		BankDao bd=new BankDaoImpl();
+		BankAccount bankAcct=bd.getBankAccount(bankName, acctName);
+		
+		if (bankAcct!=null) {
+			r.setD(bankAcct.getBalance(pin));
 			return r;
 		}
-		else
-		{ 
-			r.setD( Double.NaN);
+		else {
+			r.setD(Double.NaN);
 			return r;
-		}*/
-		return null;
+		}
 	}
 
 	

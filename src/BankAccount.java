@@ -45,6 +45,11 @@ public class BankAccount implements Serializable
     /**
      * Creates a bank account given account name, balance and pin
      */
+    public BankAccount()
+    {
+    	
+    }
+    
     public BankAccount( String initAccountName, double initBalance, String initPin )
     {
         this.accountName = initAccountName;

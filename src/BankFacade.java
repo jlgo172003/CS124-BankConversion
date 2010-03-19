@@ -58,47 +58,22 @@ public class BankFacade {
 	}
 
 
-	public boolean deleteBank(long id)
-	{
-		Bank b=bankDao.getBank(id);
-		bankDao.delete(b);
-		return true;
-	}
+	
 	/**
 	* Checks if account and pin supplied is valid
 	* Returns true if correct, false if otherwise
 	*/
 	public boolean checkAccount(String name, String pin)
 	{
-		/*try
+		BankDao bd=new BankDaoImpl();
+		BankAccount ba=bd.getBankAccount(bankName, name);
+		if (ba!=null)
 		{
-		    BankAccount account = accounts.findAccount(name);
-		    return account.checkPin(pin);
+			return ba.checkPin(pin);
 		}
-		catch(Exception e)
-		{
-		    return false;
-		}*/
 		return false;
 	}
 
-	/**
-	* Saves BankAccount data into a file. 
-	*/
-	private void updateData()
-	{
-		
-		/*try
-		{
-		    output = new ObjectOutputStream( new FileOutputStream(file) );
-		    output.writeUTF(bankName);
-		    output.writeObject(accounts);            
-		    output.close();
-		}
-		catch( IOException e)
-		{
-		}*/
-	}
 	/**
 	* Returns current bankName
 	*/
@@ -115,15 +90,23 @@ public class BankFacade {
 		String param = String.format("CreateBank %s", bankName);
 		Command c =  factory.create(param);
 		boolean result = (c.execute().getB());
-		
 		return result;
 	}
+	
+	public boolean deleteBank(String bankName)
+	{
+		String param = String.format("DeleteBank %s", bankName);
+		Command c =  factory.create(param);
+		boolean result = (c.execute().getB());
+		return result;
+	}
+	
+	
 	public boolean createBankAccount(String name, double balance, String pin)
 	{
 		String param = String.format("CreateBankAccount %s %s %f %s",bankName,name,balance,pin);
 		Command c = factory.create( param );
 		boolean result = (c.execute()).getB();
-		updateData();
 		return result;
 	}
 
@@ -135,7 +118,6 @@ public class BankFacade {
 		String param = String.format("RemoveBankAccount %s %s",bankName,name);
 		Command c = factory.create( param );
 		boolean result = (c.execute()).getB();
-		updateData();
 		return result;
 	}
 
@@ -156,7 +138,6 @@ public class BankFacade {
 		String param = String.format( "GetBalance %s %s %s", bankName, accountName, pin );
 		Command c = factory.create( param );
 		return (c.execute() ).getD();
-
 	}
 
 	/**
@@ -169,7 +150,7 @@ public class BankFacade {
 		String param = String.format( "Deposit %s %s %f", bankName, accountName, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
-		updateData();
+		//updateData();
 		return b;
 
 
@@ -184,7 +165,7 @@ public class BankFacade {
 		String param = String.format( "Withdraw %s %s %s %f", bankName, accountName, pin, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
-		updateData();
+		//updateData();
 		return b;
 	}
 
@@ -198,7 +179,7 @@ public class BankFacade {
 		String param = String.format( "Transfer %s %s %s %s %f", bankName, srcAccountName, srcPin, destAccountName,  amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
-		updateData();
+		//updateData();
 		return b;
 	}
 
@@ -227,7 +208,7 @@ public class BankFacade {
 			temp.execute();
 		}
 		
-		updateData();
+		//updateData();
 	}
 	
 	public int showMenu() {
@@ -287,7 +268,7 @@ public class BankFacade {
 			bankName=JOptionPane.showInputDialog(message);
 			if (bankName==null) break;
 			try {
-				bankDao.delete(bankDao.getBank(Long.parseLong(bankName)));
+				bankDao.deleteBank(bankDao.getBank(Long.parseLong(bankName)));
 				break;
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Please put a valid id.");

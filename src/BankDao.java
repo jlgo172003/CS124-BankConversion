@@ -1,7 +1,8 @@
 
 public interface BankDao {
-	public void save(Bank b);
-	public void delete(Bank b);
+	public void saveBank(Bank b);
+	public void deleteBank(Bank b);
+	public void deleteBankAcct(BankAccount ba);
 	public Bank getBank(String bankName);
 	public Bank getBank(Long id);
 	public java.util.List<Bank> getAllBank();

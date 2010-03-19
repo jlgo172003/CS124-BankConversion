@@ -468,6 +468,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
          
                 catch (Exception e)
                 {
+                	e.printStackTrace();
                     JOptionPane.showMessageDialog( this, "Balance should be numerical.", 
                                                     "Error!", JOptionPane.ERROR_MESSAGE );
                 }

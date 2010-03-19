@@ -102,8 +102,7 @@ public class BankDriver
 	/**
 	 * The main method needed to start application
 	 */
-	
-	
+		
 	
 	public int showMenu() {
 		return facade.showMenu();
@@ -129,7 +128,7 @@ public class BankDriver
     	bankdriver.addATM(new ATMGUI("atm2", bankdriver));
 		
     	showGUIs(bankdriver.tellers);
-		showGUIs(bankdriver.atms);
+		//showGUIs(bankdriver.atms);
 		//System.out.println();
 		
     	// instantiate a Bank
@@ -157,7 +156,7 @@ public class BankDriver
 		showMessage();*/
     }
 	    
-    	/**
+	/**
 	 * Adds Teller GUI
 	 */
 	public void addTeller(TellerInterface ti)
@@ -169,11 +168,11 @@ public class BankDriver
 		}
 	}
 
-		/**
-		* Adds ATAM GUI
-		*/
-		public void addATM(AtmInterface ai)
-		{
+	/**
+	* Adds ATAM GUI
+	*/
+	public void addATM(AtmInterface ai)
+	{
 		// store internally
 		if ( atms.get(ai.getATMID()) == null)
 		{
@@ -196,9 +195,9 @@ public class BankDriver
     /**
      * Shows welcome message
      */
-    private static void showMessage()
+    /*private static void showMessage()
     {
     	JOptionPane.showMessageDialog( current, "Welcome to Expressnet!\n Please be reminded that multiple banks are not yet supported.\n Current bank in use is 'default' unless otherwise changed.", 
                                        "Welcome!", JOptionPane.INFORMATION_MESSAGE );
-    }
+    }*/
 }

@@ -1,3 +1,5 @@
+import java.util.*;;
+
 public class CreateBankAccount implements Command, Cloneable {
 	//private BankAccountList list;
 	private String bankName;
@@ -12,6 +14,9 @@ public class CreateBankAccount implements Command, Cloneable {
 		balance = Double.parseDouble(amt);
 	}
 
+	/**
+	 * result returns true of there is something to be deleted
+	 */
 	public Result execute() {
 		Result r=new Result();
 		
@@ -19,8 +24,8 @@ public class CreateBankAccount implements Command, Cloneable {
 		BankAccount bankAcct=bd.getBankAccount(bankName, acctName);
 		if (bankAcct==null) {
 			Bank b=bd.getBank(bankName);
-			b.addBankAccount(new BankAccount(acctName, balance, pin));
-			bd.save(b);
+			b.addBankAccount(new BankAccount(acctName,balance,pin));
+			bd.saveBank(b);
 		}
 		
 		r.setB(bankAcct==null);

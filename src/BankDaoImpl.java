@@ -7,7 +7,30 @@ import org.hibernate.Transaction;
 
 public class BankDaoImpl implements BankDao {
 
-	public void delete(Bank b) {
+	public void deleteBank(Bank b) {
+		Session session = null;
+        Transaction tx = null;
+        
+        try 
+        {
+            session = SessionFactorySingleton.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.delete(b);
+            tx.commit(); 
+        }
+        catch(HibernateException ex) 
+        {
+            ex.printStackTrace();
+            tx.rollback();
+        } 
+        finally 
+        {
+            session.close();
+        }
+		
+	}
+	
+	public void deleteBankAcct(BankAccount b) {
 		Session session = null;
         Transaction tx = null;
         
@@ -101,13 +124,36 @@ public class BankDaoImpl implements BankDao {
 	
 	@Override
 	public BankAccount getBankAccount(String bankName, String accountName) {
-		
+		Session session = null;
+        Transaction tx = null;
+        
+        try 
+        {
+            session = SessionFactorySingleton.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            
+            Query q = session.createQuery("select balance from Bank b left join b.bal as balance " +
+            								"where b.name= ? and balance.accountName= ?");
+            		//"from Bank where name = ? ");
+            q.setParameter(0, bankName);
+            q.setParameter(1, accountName);
+            return (BankAccount)q.uniqueResult();
+        }
+        catch(HibernateException ex) 
+        {
+            ex.printStackTrace();
+            tx.rollback();
+        } 
+        finally 
+        {
+            session.close();
+        }
 		return null;
 	}
 
 	
 	@Override
-	public void save(Bank b) {
+	public void saveBank(Bank b) {
 		Session session = null;
         Transaction tx = null;
         
