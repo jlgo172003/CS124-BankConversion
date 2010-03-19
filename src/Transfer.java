@@ -1,22 +1,27 @@
 public class Transfer implements Command, Cloneable {
-	private BankAccountList list;
+	//private BankAccountList list;
+	private String srcBankName;
 	private String srcAccountName;
 	private String srcPin;
+	private String destBankName;
 	private String destAccountName;
 	private double amount;
 	
-	public void setParams ( BankAccountList b, String srcAccountName, String srcPin,
-                             String destAccountName, String amt ) {
-		list = b;
+	public void setParams ( String srcBankName, String srcAccountName, String srcPin,
+                             String destBankName, String destAccountName, String amt ) {
+		this.srcBankName = srcBankName;
 		this.srcAccountName = srcAccountName;
 		this.srcPin = srcPin;
+		this.destBankName = destBankName;
 		this.destAccountName = destAccountName;
 		amount = Double.parseDouble(amt);
 	}
 
 	public Result execute() {
-		BankAccount srcAccount = list.findAccount( srcAccountName );
-		BankAccount destAccount = list.findAccount( destAccountName );
+		BankDao bd = new BankDaoImpl();
+		BankAccount srcAccount = bd.getBankAccount(srcBankName, srcAccountName);
+		BankAccount destAccount = bd.getBankAccount(destBankName, destAccountName);
+
 		Result r = new Result();
 		
 		if ( (srcAccount != null) && (destAccount != null) )
@@ -39,7 +44,8 @@ public class Transfer implements Command, Cloneable {
 		    {
 		        boolean result = destAccount.deposit( amount );
 		        r.setB(result);
-		        
+		        bd.saveBankAccount(srcAccount);
+		        bd.saveBankAccount(destAccount);
 		        return r;
 		    }
 		}

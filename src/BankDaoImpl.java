@@ -30,7 +30,7 @@ public class BankDaoImpl implements BankDao {
 		
 	}
 	
-	public void deleteBankAcct(BankAccount b) {
+	public void deleteBankAccount(BankAccount b) {
 		Session session = null;
         Transaction tx = null;
         
@@ -175,5 +175,27 @@ public class BankDaoImpl implements BankDao {
             session.close();
         }		
 	}
-
+	
+	public void saveBankAccount(BankAccount ba) {
+		Session session = null;
+        Transaction tx = null;
+        
+        try 
+        {
+            session = SessionFactorySingleton.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+          	session.saveOrUpdate(ba);
+            
+            tx.commit(); 
+        }
+        catch(HibernateException ex) 
+        {
+            ex.printStackTrace();
+            tx.rollback();
+        }
+        finally 
+        {
+            session.close();
+        }		
+	}
 }

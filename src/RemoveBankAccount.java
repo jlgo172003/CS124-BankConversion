@@ -22,7 +22,7 @@ public class RemoveBankAccount implements Command, Cloneable {
 		if (bankAcct!=null) {
 			System.out.println(bankAcct.getAccountName());
 			
-			bd.deleteBankAcct(bankAcct);
+			bd.deleteBankAccount(bankAcct);
 		}
 		
 		r.setB(bankAcct!=null);

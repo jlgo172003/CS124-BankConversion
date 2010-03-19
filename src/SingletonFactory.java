@@ -39,23 +39,23 @@ public class SingletonFactory {
 			return gb;
 		}
 		
-		/*else if( temp[0].equals( "Deposit" ) ) {
+		else if( temp[0].equals( "Deposit" ) ) {
 			Deposit d = (Deposit) c_deposit.clone();
-			d.setParams( bal, temp[1], temp[2] );
+			d.setParams( temp[1], temp[2], temp[3] );
 			return d;		
 		}
 		
 		else if( temp[0].equals( "Withdraw" ) ) {
 			Withdraw w = (Withdraw) c_withdraw.clone();
-			w.setParams( bal, temp[1], temp[2], temp[3] );
+			w.setParams( temp[1], temp[2], temp[3], temp[4] );
 			return w;
 		}
 		
 		else if( temp[0].equals( "Transfer" ) ) {
 			Transfer t = (Transfer) c_transfer.clone();
-			t.setParams( bal, temp[1], temp[2], temp[3], temp[4] );
+			t.setParams( temp[1], temp[2], temp[3], temp[4], temp[5], temp[6] );
 			return t;
-		}*/
+		}
 		
 		else if( temp[0].equals( "CreateBankAccount" ) ) {
 			CreateBankAccount cba = (CreateBankAccount) c_createbankaccount.clone();

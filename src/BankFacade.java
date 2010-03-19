@@ -150,7 +150,6 @@ public class BankFacade {
 		String param = String.format( "Deposit %s %s %f", bankName, accountName, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
-		//updateData();
 		return b;
 
 
@@ -165,7 +164,6 @@ public class BankFacade {
 		String param = String.format( "Withdraw %s %s %s %f", bankName, accountName, pin, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
-		//updateData();
 		return b;
 	}
 
@@ -176,7 +174,7 @@ public class BankFacade {
 	public boolean transfer( String srcAccountName, String srcPin,
 		             String destAccountName, double amount )
 	{
-		String param = String.format( "Transfer %s %s %s %s %f", bankName, srcAccountName, srcPin, destAccountName,  amount );
+		String param = String.format( "Transfer %s %s %s %s %s %f", bankName, srcAccountName, srcPin, bankName, destAccountName,  amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
 		//updateData();

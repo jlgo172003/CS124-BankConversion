@@ -24,35 +24,30 @@ public class BankDriver
 	
 	private BankFacade facade;
 	private String bankName;
-	//constructor
-	/*public void setBank(String bankname) {
-		facade.setBank(bankName);
 	
-	}*/
-	/*public BankDriver(String bankName)
-	{
-		this.bankName = bankName;
-	}*/
-	
-	public void init() {
-		facade = BankFacade.getInstance();
-		//facade.init(bankName);
-	}
 	public BankDriver() {
 		init();		
-		
+		/**
+		 * thread here?
+		 */
 	}
 	
 	public BankDriver(String macro ) {
-		//facade = BankFacade.getInstance();
-		//facade.init(bankName);
 		init();
 		try {
 			facade.doMacro( macro );
 		}
-		catch (Exception e) { System.out.println( "ERROR OCCURED" ); }
-		
+		catch (Exception e) {
+			System.err.println("Error occured while doing macro \n Details:" ); 
+			e.printStackTrace();
+		}
 	}
+
+	public void init() {
+		facade = BankFacade.getInstance();
+	}
+
+	
 	public String getBankName()
 	{
 		return facade.getBankName();
