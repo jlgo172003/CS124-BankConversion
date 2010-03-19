@@ -48,7 +48,6 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
         this.setTitle("ATM GUI");
         this.id = id;
         this.bankDriver = bank;
-        this.bankName = "XD";//bank.getBankName();
         changeButtonState(false);
         this.addWindowListener(new WindowAdapter()
         {
@@ -58,7 +57,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
              }
         });
     }
-    
+        
     /**
      * The 'look and feel'of the GUI
      */

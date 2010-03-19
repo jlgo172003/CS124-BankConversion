@@ -12,19 +12,15 @@ public class BankFacade {
 	//variables
 	private String bankName;
 	private SingletonFactory factory;
-	
-	BankDao bankDao;
+	private CommandThread thread;
+	//BankDao bankDao;
 	
 	
 	private static BankFacade facade = new BankFacade();
 	
 	private BankFacade() {	
-		Configuration configuration;
-		configuration = new Configuration();
-        configuration.configure(new File("hibernate.cfg.xml"));
-        SessionFactory sessionFactory = configuration.buildSessionFactory();
-        SessionFactorySingleton.setSessionFactory(sessionFactory);
-		bankDao=new BankDaoImpl();
+		thread = CommandThread.getInstance();
+		thread.start();
 		factory = SingletonFactory.getInstance();
 
 	}
@@ -39,6 +35,14 @@ public class BankFacade {
 		JOptionPane.showMessageDialog(null, "Bank set to "+bankName);
 	}
 
+	@SuppressWarnings("deprecation")
+	protected void finalize() throws Throwable
+	{
+	  //do finalization here
+	  //super.finalize(); //not necessary if extending Object.
+		//thread.in();
+		thread.stop();
+	} 
 
 	
 	/**
@@ -68,12 +72,14 @@ public class BankFacade {
 	/**
 	* Creates a new bank account with the ff information: name, balance and pin.
 	*/
-	public boolean createBank(String bankName)
+	public void createBank(String bankName)
 	{
 		String param = String.format("CreateBank %s", bankName);
 		Command c =  factory.create(param);
-		boolean result = (c.execute().getB());
-		return result;
+		thread.addCommand(c);
+		
+		//boolean result = (c.execute().getB());
+		//return result;
 	}
 	
 	public boolean deleteBank(String bankName)
@@ -181,21 +187,25 @@ public class BankFacade {
 	}
 
 	
-	public void doMacro( String macro ) throws Exception {
-		Scanner in = new Scanner( new File( macro ) );
-		ArrayList<Command> comm = new ArrayList<Command>();
-		while( in.hasNextLine() ) {
+	public void doMacro( String macro ) {
+		try {
+			Scanner in = new Scanner( new File( macro ) );
+			ArrayList<Command> comm = new ArrayList<Command>();
+			while( in.hasNextLine() ) {
+				
+				String param = in.nextLine();
+				System.out.println( param );
+				comm.add( factory.create( param ) );
+			}
 			
-			String param = in.nextLine();
-			System.out.println( param );
-			comm.add( factory.create( param ) );
+			for( Command temp : comm ) {
+				temp.execute();
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		} catch (Exception e) {
+			System.out.println("Error occured while reading file.");
 		}
-		
-		for( Command temp : comm ) {
-			temp.execute();
-		}
-		
-		//updateData();
 	}
 	
 	public int showMenu() {
@@ -204,7 +214,7 @@ public class BankFacade {
 		"2. Remove Bank\n" +
 		"3. Select bank to use\n" +
 		"0. Exit";
-
+		String bankName=null;
 		int command;
 		do {
 			try {
@@ -220,7 +230,8 @@ public class BankFacade {
 				removeBankMenu();
 				break;
 			case 3:
-				selectBankMenu();
+				bankName=selectBankMenu();
+				if (bankName==null) command=1;
 				break;
 			}
 		} while (command==1 || command==2);
@@ -241,6 +252,7 @@ public class BankFacade {
 	}
 	public void removeBankMenu() {
 		String bankName;
+		BankDao bankDao=thread.getDao();
 		String message="Remove which bank? (just type the id)\n" +
 				"Don't put anything to return to menu.";
 		List<Bank> list=bankDao.getAllBank();
@@ -263,11 +275,16 @@ public class BankFacade {
 			
 		} while (!bankName.equals(""));
 	}
-	public void selectBankMenu() {
+	public String selectBankMenu() {
 		String bankName;
+		BankDao bankDao=thread.getDao();
 		String message="Select which bank? (just type the number)\n" +
 				"Don't put anything to return to menu.";
 		List<Bank> list=bankDao.getAllBank();
+		if (list.size()==0) {
+			JOptionPane.showMessageDialog(null, "No bank to select.");
+			return null;
+		}
 		for (int ctr=0;ctr<list.size();ctr++) {
 			message+="\n"+ctr+":"+list.get(ctr).getName();
 		}
@@ -283,6 +300,7 @@ public class BankFacade {
 			}
 			
 		} while (!bankName.equals(""));
+		return bankName;
 	}
 }
 

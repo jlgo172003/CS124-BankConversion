@@ -34,13 +34,17 @@ public class BankDriver
 	
 	public BankDriver(String macro ) {
 		init();
-		try {
+		facade.doMacro(macro);
+		/*try {
 			facade.doMacro( macro );
 		}
-		catch (Exception e) {
-			System.err.println("Error occured while doing macro \n Details:" ); 
-			e.printStackTrace();
+		catch (FileNotFoundException e){
+			
 		}
+		catch (Exception e) {
+			System.out.println("Error occured while doing macro \n Details:" ); 
+			e.printStackTrace();
+		}*/
 	}
 
 	public void init() {
@@ -53,9 +57,9 @@ public class BankDriver
 		return facade.getBankName();
 	}
 	
-	public boolean createBank(String bankname)
+	public void createBank(String bankname)
 	{
-		return facade.createBank(bankname);
+		facade.createBank(bankname);
 	}
 	
 	public boolean createBankAccount(String bankName, String name, double balance, String pin)
@@ -110,11 +114,12 @@ public class BankDriver
     	 * setup opening of ini file
     	 */
     	
-    	BankDriver bankdriver=new BankDriver();
+    	BankDriver bankdriver=new BankDriver("bankSetup.ini");
+    	//bankdriver.
     	
     	int command=bankdriver.showMenu();
     	
-    	if (command==0) return;
+    	if (command==0) System.exit(0);
     	
     	bankdriver.addTeller(new TellerGUI("teller1", bankdriver));
     	bankdriver.addTeller(new TellerGUI("teller2", bankdriver));
@@ -124,31 +129,7 @@ public class BankDriver
 		
     	showGUIs(bankdriver.tellers);
 		showGUIs(bankdriver.atms);
-		//System.out.println();
-		
-    	// instantiate a Bank
-		/*String name = null;
-		try
-		{
-		    name = args[0];
-		}
-		catch(ArrayIndexOutOfBoundsException aoobe)
-		{
-		    name = "default";
-		}
-		//Bank bank = new Bank(name);
-		BankDriver bank = new BankDriver(name, "bankSetup.ini" );
-		
-		// add 2 Tellers     //QQQ fix the ID
-		bank.addTeller(new TellerGUI("teller1", bank));
-		bank.addTeller(new TellerGUI("teller2", bank));
-		// add 2 Atms
-		bank.addATM(new ATMGUI("atm1", bank));
-		bank.addATM(new ATMGUI("atm2", bank));
-		// make GUIs visible
-		showGUIs(bank.tellers);
-		showGUIs(bank.atms);
-		showMessage();*/
+		/*showMessage();*/
     }
 	    
 	/**
