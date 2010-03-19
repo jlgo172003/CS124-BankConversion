@@ -207,7 +207,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
      */
     public void balance()
     {
-        double x = bankdriver.getBalance(accountName, pin );
+        double x = bankdriver.getBalance(null,accountName, pin );
         if (!Double.isNaN(x))
         {
             screen.append("Balance: " + x + "\n");
@@ -242,7 +242,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
             {
                 tempPin = input.getText();
                 screen.append("PIN: " + tempPin + "\n");
-                if (bankdriver.checkAccount(tempName, tempPin))
+                if (bankdriver.checkAccount(null,tempName, tempPin))
                 {
                     accountName = tempName;
                     pin = tempPin;
@@ -447,7 +447,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                 	//checks if balance is a double
                     balance = Double.parseDouble((String)input.getText());
                     screen.append("Balance: " + balance + "\n");
-                    boolean success = bankdriver.createBankAccount(tempName, balance, tempPin);
+                    boolean success = bankdriver.createBankAccount(null,tempName, balance, tempPin);
                     if (success)
                     {
                         accountName = tempName;
@@ -572,7 +572,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                                      double balance, 
                                      String pin)
     {
-        return bankdriver.createBankAccount(name, balance, pin);
+        return bankdriver.createBankAccount(null,name, balance, pin);
     }
 	
 	/**
@@ -580,7 +580,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
 	 */
     public boolean removeBankAccount(String name)
     {
-        return bankdriver.removeBankAccount(name);
+        return bankdriver.removeBankAccount(null,name);
 
     }      
     
@@ -604,7 +604,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     public double getBalance(String accountName, 
                              String pin )
     {
-        return bankdriver.getBalance(accountName, pin);
+        return bankdriver.getBalance(null,accountName, pin);
     }
 
 	/**
@@ -613,7 +613,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     public boolean deposit(String accountName, 
                            double amount )
     {
-        return bankdriver.deposit(accountName, amount);
+        return bankdriver.deposit(null,accountName, amount);
     }
     
     /**
@@ -623,7 +623,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             String pin, 
                             double amount )
     {
-        return bankdriver.withdraw(accountName, pin, amount);
+        return bankdriver.withdraw(null,accountName, pin, amount);
     }
     
 	/**
@@ -648,6 +648,6 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                             String destAccountName, 
                             double amount )
     {
-        return bankdriver.transfer(srcAccountName, srcPin, destAccountName, amount);
+        return bankdriver.transfer(null,srcAccountName, srcPin, destAccountName, amount);
     }
 }

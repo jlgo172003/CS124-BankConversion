@@ -37,24 +37,6 @@ public class BankFacade {
 	public void setBank( String bankName) {
 		this.bankName=bankName;
 		JOptionPane.showMessageDialog(null, "Bank set to "+bankName);
-
-		/*this.bankName = bankName;
-		file = bankName.replaceAll(" ", "") + "Data.bnk";
-		// check if you can load from a file
-		try
-		{
-		    input = new ObjectInputStream( new FileInputStream(file) );
-		    bankName = (String)input.readUTF(); //QQQ
-		    this.accounts = (BankAccountList)input.readObject(); //QQQ
-		    input.close();
-		}
-		catch( Exception e ) //FileNotFoundException fnfe ) {} catch( ClassNotFoundException cnfe ) {} catch( IOException ioe ) {}
-		{
-		    this.accounts = new BankAccountList();
-		}
-
-		factory = SingletonFactory.getInstance();
-		factory.setBAL( accounts );*/
 	}
 
 
@@ -63,8 +45,9 @@ public class BankFacade {
 	* Checks if account and pin supplied is valid
 	* Returns true if correct, false if otherwise
 	*/
-	public boolean checkAccount(String name, String pin)
+	public boolean checkAccount(String bankName,String name, String pin)
 	{
+		if (bankName==null) bankName=this.bankName;
 		BankDao bd=new BankDaoImpl();
 		BankAccount ba=bd.getBankAccount(bankName, name);
 		if (ba!=null)
@@ -102,8 +85,9 @@ public class BankFacade {
 	}
 	
 	
-	public boolean createBankAccount(String name, double balance, String pin)
+	public boolean createBankAccount(String bankName,String name, double balance, String pin)
 	{
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format("CreateBankAccount %s %s %f %s",bankName,name,balance,pin);
 		Command c = factory.create( param );
 		boolean result = (c.execute()).getB();
@@ -113,8 +97,9 @@ public class BankFacade {
 	/**
 	 * Removes an existing bank account given the ff information: name
 	 **/ 
-	public boolean removeBankAccount(String name)
+	public boolean removeBankAccount(String bankName,String name)
 	{
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format("RemoveBankAccount %s %s",bankName,name);
 		Command c = factory.create( param );
 		boolean result = (c.execute()).getB();
@@ -133,8 +118,9 @@ public class BankFacade {
 	/**
 	* Returns the current balance of the account accountName.
 	*/
-	public double getBalance( String accountName, String pin )
+	public double getBalance(String bankName, String accountName, String pin )
 	{
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "GetBalance %s %s %s", bankName, accountName, pin );
 		Command c = factory.create( param );
 		return (c.execute() ).getD();
@@ -144,9 +130,10 @@ public class BankFacade {
 	* Deposits the amount to the account with the account name accountName;
 	* Returns true if successful, false if not
 	*/
-	public boolean deposit( String accountName, double amount )
+	public boolean deposit(String bankName, String accountName, double amount )
 	{
 
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Deposit %s %s %f", bankName, accountName, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
@@ -159,8 +146,9 @@ public class BankFacade {
 	* Withdraws the amount to the account with the account name accountName;
 	* Returns true if successful, false if not
 	*/
-	public boolean withdraw( String accountName, String pin, double amount )
+	public boolean withdraw(String bankName, String accountName, String pin, double amount )
 	{
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Withdraw %s %s %s %f", bankName, accountName, pin, amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();
@@ -171,9 +159,10 @@ public class BankFacade {
 	* Transfer the amount from the account srcAccountName to the account
 	* destAccountName. Returns true if successful, false if not.
 	*/
-	public boolean transfer( String srcAccountName, String srcPin,
+	public boolean transfer(String bankName, String srcAccountName, String srcPin,
 		             String destAccountName, double amount )
 	{
+		if (bankName==null) bankName=this.bankName;
 		String param = String.format( "Transfer %s %s %s %s %s %f", bankName, srcAccountName, srcPin, bankName, destAccountName,  amount );
 		Command c = factory.create( param );
 		boolean b = (c.execute() ).getB();

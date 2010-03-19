@@ -35,7 +35,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     private Color color3 = new Color(255, 198, 8);
     
     private String id = "";
-    private BankDriver bank = null;
+    private BankDriver bankDriver = null;
     private JLabel loggedAs = new JLabel();
     
     /**
@@ -47,7 +47,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
         this.setSize(500,300); 
         this.setTitle("ATM GUI");
         this.id = id;
-        this.bank = bank;
+        this.bankDriver = bank;
         this.bankName = "XD";//bank.getBankName();
         changeButtonState(false);
         this.addWindowListener(new WindowAdapter()
@@ -134,7 +134,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
      */
     public void balance()  
     {
-        double x = bank.getBalance(accountName, pin );
+        double x = bankDriver.getBalance(bankName,accountName, pin );
         if (!Double.isNaN(x))
         {
             area.append("Your balance is: " + x + "\n");
@@ -198,12 +198,12 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
             if(action == 1)
             {
                 String x = field.getText();
-                if (x.equalsIgnoreCase(bank.getBankName()))
+                if (x.equalsIgnoreCase(bankDriver.getBankName()))
                 {
                     bankName = x;
                     area.append("Transacting with " + bankName + "\n");
                     field.setText("");
-                    area.append("Please enter accout name..." + "\n");
+                    area.append("Please enter account name..." + "\n");
                     action = 2;
                 }
                 else if (!x.equals(""))
@@ -236,7 +236,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
                 tempPin = x;
                 area.append("Your pin is " + tempPin + "\n");
                 //supposed to check the bank & account...but multiple banks aren't supported yet
-                if (bank.checkAccount(tempName, tempPin))
+                if (bankDriver.checkAccount(bankName,tempName, tempPin))
                 {
                     accountName = tempName;
                     pin = tempPin;
@@ -447,7 +447,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
      */  
     public boolean checkBank(String bankName)
     {
-        if (!bank.getBankName().equalsIgnoreCase(bankName))
+        if (!bankDriver.getBankName().equalsIgnoreCase(bankName))
         {
             area.append("MULTIPLE BANKS NOT CURRENTLY SUPPORTED\n");
             return false;            
@@ -472,7 +472,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     {
         if (checkBank(bankName))
         {
-            return bank.getBalance(accountName, pin);
+            return bankDriver.getBalance(bankName,accountName, pin);
         }
         else
         {
@@ -489,7 +489,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     {
         if (checkBank(bankName))
         {
-            return bank.deposit(accountName, amount);
+            return bankDriver.deposit(bankName,accountName, amount);
         }
         else
         {
@@ -507,7 +507,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     {
         if (checkBank(bankName))
         {
-            return bank.withdraw(accountName, pin, amount);
+            return bankDriver.withdraw(bankName,accountName, pin, amount);
         }
         else
         {
@@ -527,7 +527,7 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
     {
         if (checkBank(bankName))
         {
-            return bank.transfer(srcAccountName, srcPin, destAccountName, amount);
+            return bankDriver.transfer(bankName,srcAccountName, srcPin, destAccountName, amount);
         }
         else
         {

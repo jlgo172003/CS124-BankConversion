@@ -58,40 +58,40 @@ public class BankDriver
 		return facade.createBank(bankname);
 	}
 	
-	public boolean createBankAccount(String name, double balance, String pin)
+	public boolean createBankAccount(String bankName, String name, double balance, String pin)
 	{
-		return facade.createBankAccount( name, balance, pin );
+		return facade.createBankAccount(bankName, name, balance, pin );
 	}
 
-	public boolean removeBankAccount(String name)
+	public boolean removeBankAccount(String bankName, String name)
 	{
-		return facade.removeBankAccount( name );
+		return facade.removeBankAccount(bankName, name );
 	}
 		
-	public double getBalance( String accountName, String pin )
+	public double getBalance(String bankName,  String accountName, String pin )
 	{
-		return facade.getBalance( accountName, pin );
+		return facade.getBalance(bankName, accountName, pin );
 	}
 	
-	public boolean deposit( String accountName, double amount )
+	public boolean deposit(String bankName,  String accountName, double amount )
 	{
-		return facade.deposit( accountName, amount );
+		return facade.deposit(bankName, accountName, amount );
 	}
 	
-	public boolean withdraw( String accountName, String pin, double amount )
+	public boolean withdraw(String bankName,  String accountName, String pin, double amount )
 	{
-		return facade.withdraw( accountName, pin, amount );
+		return facade.withdraw(bankName, accountName, pin, amount );
 	}
 
-	public boolean transfer( String srcAccountName, String srcPin,
+	public boolean transfer(String bankName,  String srcAccountName, String srcPin,
 		             String destAccountName, double amount )
 	{
-		return facade.transfer( srcAccountName, srcPin, destAccountName, amount );
+		return facade.transfer(bankName, srcAccountName, srcPin, destAccountName, amount );
 	}
 	
-	public boolean checkAccount(String name, String pin)
+	public boolean checkAccount(String bankName, String name, String pin)
 	{
-		return facade.checkAccount( name, pin );
+		return facade.checkAccount(bankName, name, pin );
 
 	}
 	/**
@@ -123,7 +123,7 @@ public class BankDriver
     	bankdriver.addATM(new ATMGUI("atm2", bankdriver));
 		
     	showGUIs(bankdriver.tellers);
-		//showGUIs(bankdriver.atms);
+		showGUIs(bankdriver.atms);
 		//System.out.println();
 		
     	// instantiate a Bank
