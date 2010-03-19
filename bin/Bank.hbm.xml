@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+<class name="Bank" table="BANK_TABLE">
+
+<id name="id" column="ID">
+	<generator class="native"/>
+</id>
+
+<property name="name" type="string" column="BANK_NAME"/>
+
+
+<list name="bal"
+       cascade="all"
+       lazy="false">
+	<key column="BANK_ACCOUNT_LIST"/>
+	<index column="idx" />
+	<one-to-many class="BankAccount"/>
+</list>
+
+</class>
+
+</hibernate-mapping>
