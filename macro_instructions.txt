@@ -1,0 +1,10 @@
+these are the list of commands that be used for the macros in bankSetup.ini
+
+CreateBank <bankName>
+RemoveBank <bankName>
+CreateBankAccount <bankName> <accountName> <balance> <pin>
+RemoveBankAccount <bankName> <accountName>
+GetBalance <bankName> <accountName> <pin> 
+Deposit <bankName> <accountName> <amount> 
+Withdraw <bankName> <accountName> <pin> <amount> 
+Transfer <sourceBankName> <sourceAccountName> <pin> <destinationBankName> <destinationAccountName> <transferAmount> 
