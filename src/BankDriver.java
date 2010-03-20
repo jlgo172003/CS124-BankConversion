@@ -44,11 +44,6 @@ public class BankDriver
 		return facade.getBankName();
 	}
 	
-	public void createBank(String bankname)
-	{
-		facade.createBank(bankname);
-	}
-	
 	public void createBankAccount(String bankName, String name, double balance, String pin, Listener l)
 	{
 		facade.createBankAccount(bankName, name, balance, pin, l );
@@ -90,8 +85,10 @@ public class BankDriver
 	 */
 		
 	
-	public int showMenu() {
-		return facade.showMenu();
+	public void showMenu() {
+		
+		int command=facade.showMenu();
+    	if (command==0) System.exit(0);
 		
 	}
 	
@@ -102,11 +99,7 @@ public class BankDriver
     	 */
     	
     	BankDriver bankdriver=new BankDriver("bankSetup.ini");
-    	//bankdriver.
-    	
-    	int command=bankdriver.showMenu();
-    	
-    	if (command==0) System.exit(0);
+    	bankdriver.showMenu();
     	
     	bankdriver.addTeller(new TellerGUI("teller1", bankdriver));
     	bankdriver.addTeller(new TellerGUI("teller2", bankdriver));
@@ -116,6 +109,7 @@ public class BankDriver
 		
     	showGUIs(bankdriver.tellers);
 		showGUIs(bankdriver.atms);
+		
 		/*showMessage();*/
     }
 	    

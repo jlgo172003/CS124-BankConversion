@@ -44,7 +44,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     {
         this.init();
         this.setSize(500,300); 
-        this.setTitle("Teller GUI");
+        this.setTitle("Teller GUI - "+bank.getBankName());
         this.id = id;
         this.bankdriver = bank;
         this.changeButtonState(false);

@@ -35,15 +35,6 @@ public class BankFacade {
 		JOptionPane.showMessageDialog(null, "Bank tellers set to "+bankName);
 	}
 
-	@SuppressWarnings("deprecation")
-	protected void finalize() throws Throwable
-	{
-	  //do finalization here
-	  //super.finalize(); //not necessary if extending Object.
-		//thread.in();
-		thread.stop();
-	} 
-
 	
 	/**
 	* Checks if account and pin supplied is valid
@@ -82,11 +73,10 @@ public class BankFacade {
 		//return result;
 	}
 	
-	public void removeBank(String bankName, Listener l)
+	public void removeBank(String bankName)
 	{
 		String param = String.format("RemoveBank %s", bankName);
 		Command c =  factory.create(param);
-		c.setListener(l);
 		thread.addCommand(c);
 		
 		//boolean result = (c.execute().getB());
@@ -206,7 +196,6 @@ public class BankFacade {
 	public void doMacro( String macro ) {
 		try {
 			Scanner in = new Scanner( new File( macro ) );
-			//ArrayList<Command> comm = new ArrayList<Command>();
 			while( in.hasNextLine() ) {
 				
 				String param = in.nextLine();
@@ -215,10 +204,6 @@ public class BankFacade {
 				thread.addCommand(factory.create( param ));
 			}
 			
-			/*for( Command temp : comm ) {
-				thread.addCommand(temp);
-				//temp.execute();
-			}*/
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found.");
 		} catch (Exception e) {
@@ -272,7 +257,7 @@ public class BankFacade {
 	public void removeBankMenu() {
 		String bankName;
 		BankDao bankDao=thread.getDao();
-		String message="Remove which bank? (just type the id)\n" +
+		String message="Remove which bank? (just type the number)\n" +
 				"Don't put anything to return to menu.";
 		List<Bank> list=bankDao.getAllBank();
 		if (list.size()==0) {
@@ -280,25 +265,30 @@ public class BankFacade {
 			return;
 		}
 		for (int ctr=0;ctr<list.size();ctr++) {
-			message+="\n"+list.get(ctr).getId()+":"+list.get(ctr).getName();
+			message+="\n"+ctr+":"+list.get(ctr).getName();
 		}
 		do {
 			bankName=JOptionPane.showInputDialog(message);
 			if (bankName==null) break;
 			try {
-				bankDao.deleteBank(bankDao.getBank(Long.parseLong(bankName)));
+				int ctr=Integer.parseInt(bankName);
+				removeBank(list.get(ctr).getName());
 				break;
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Please put a valid id.");
+				JOptionPane.showMessageDialog(null, "Please put a valid number.");
 			}
 			
 		} while (!bankName.equals(""));
 	}
 	public String selectBankMenu() {
-		String bankName;
+		String bankName=null;
 		BankDao bankDao=thread.getDao();
-		String message="Select which bank? (just type the number)\n" +
-				"Don't put anything to return to menu.";
+		if (bankDao==null) {
+			JOptionPane.showMessageDialog(null, "Database hasn't been prepared, " +
+					"please try again in a few seconds.");
+			return bankName;
+		}
+		String message="Select which bank? (just type the number)\n";
 		List<Bank> list=bankDao.getAllBank();
 		if (list.size()==0) {
 			JOptionPane.showMessageDialog(null, "No bank to select.");
@@ -316,6 +306,7 @@ public class BankFacade {
 			} 
 			catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Please put a valid input.");
+				bankName="blah";
 			}
 			
 		} while (!bankName.equals(""));

@@ -1,6 +1,5 @@
 *.class
 bin/*.class
-bankSetup.ini
 defaultData.bnk
 .project
 .classpath
