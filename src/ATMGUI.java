@@ -53,7 +53,8 @@ public class ATMGUI extends JFrame implements ActionListener, AtmInterface
         {
              public void windowClosing( WindowEvent we )
              {
-                 System.exit(0);
+            	 bankdriver.destroyGUIs();
+                 //System.exit(0);
              }
         });
     }

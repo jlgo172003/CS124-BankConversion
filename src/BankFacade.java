@@ -32,7 +32,8 @@ public class BankFacade {
 	//init method
 	public void setBank( String bankName) {
 		this.bankName=bankName;
-		JOptionPane.showMessageDialog(null, "Bank tellers set to "+bankName);
+		JOptionPane.showMessageDialog(null, "Bank tellers set to "+bankName+"\n" +
+				"Close any window to switch tellers to another bank.");
 	}
 
 	
@@ -257,6 +258,11 @@ public class BankFacade {
 	public void removeBankMenu() {
 		String bankName;
 		BankDao bankDao=thread.getDao();
+		if (bankDao==null) {
+			JOptionPane.showMessageDialog(null, "Database hasn't been loaded yet, " +
+					"please try again in a few seconds.");
+			return;
+		}
 		String message="Remove which bank? (just type the number)\n" +
 				"Don't put anything to return to menu.";
 		List<Bank> list=bankDao.getAllBank();
@@ -273,6 +279,7 @@ public class BankFacade {
 			try {
 				int ctr=Integer.parseInt(bankName);
 				removeBank(list.get(ctr).getName());
+				JOptionPane.showMessageDialog(null, "Deleted "+list.get(ctr).getName());
 				break;
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Please put a valid number.");
@@ -284,7 +291,7 @@ public class BankFacade {
 		String bankName=null;
 		BankDao bankDao=thread.getDao();
 		if (bankDao==null) {
-			JOptionPane.showMessageDialog(null, "Database hasn't been prepared, " +
+			JOptionPane.showMessageDialog(null, "Database hasn't been loaded yet, " +
 					"please try again in a few seconds.");
 			return bankName;
 		}

@@ -97,22 +97,13 @@ public class BankDriver
     	/**Todo:
     	 * setup opening of ini file
     	 */
-    	
     	BankDriver bankdriver=new BankDriver("bankSetup.ini");
-    	bankdriver.showMenu();
-    	
-    	bankdriver.addTeller(new TellerGUI("teller1", bankdriver));
-    	bankdriver.addTeller(new TellerGUI("teller2", bankdriver));
-		// add 2 Atms
-    	bankdriver.addATM(new ATMGUI("atm1", bankdriver));
-    	bankdriver.addATM(new ATMGUI("atm2", bankdriver));
-		
-    	showGUIs(bankdriver.tellers);
-		showGUIs(bankdriver.atms);
+    	bankdriver.start();
 		
 		/*showMessage();*/
     }
-	    
+	   
+    
 	/**
 	 * Adds Teller GUI
 	 */
@@ -147,6 +138,38 @@ public class BankDriver
             current = (JFrame)h.get(i.next());
             current.show();
         }
+    }
+    public void destroyGUIs()
+    {
+    	if(atms.size()!=0) {
+	    	for(Iterator i = atms.keySet().iterator();i.hasNext();)
+	        {
+	            current = (JFrame)atms.get(i.next());
+	            //current.show();
+	            current.dispose();
+	        }
+	    	for(Iterator i = tellers.keySet().iterator();i.hasNext();)
+	        {
+	            current = (JFrame)tellers.get(i.next());
+	            current.dispose();
+	        }
+	    	atms.clear();
+	    	tellers.clear();
+	    	start();
+    	}
+    }
+    
+    public void start() {
+    	showMenu();
+    	
+    	addTeller(new TellerGUI("teller1", this));
+    	addTeller(new TellerGUI("teller2", this));
+		// add 2 Atms
+    	addATM(new ATMGUI("atm1", this));
+    	addATM(new ATMGUI("atm2", this));
+		
+    	showGUIs(tellers);
+		showGUIs(atms);
     }
     
     /**

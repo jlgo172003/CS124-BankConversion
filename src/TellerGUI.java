@@ -52,7 +52,8 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
         {
              public void windowClosing( WindowEvent we )
              {
-                 System.exit(0);
+            	 bankdriver.destroyGUIs();
+                 //System.exit(0);
              }
         });
     }

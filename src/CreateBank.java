@@ -1,4 +1,6 @@
 import java.util.*;
+
+import javax.swing.JOptionPane;
 public class CreateBank extends Command implements Cloneable {
 
 	private String bankName;
@@ -12,12 +14,17 @@ public class CreateBank extends Command implements Cloneable {
 
 		BankDao bd=new BankDaoImpl();
 		Bank bank=bd.getBank(bankName);
+
 		if (bank==null) {
 			bank=new Bank();
 			List<BankAccount> bal=new ArrayList<BankAccount>();
 			bank.setName(bankName);
 			bank.setBal(bal);
 			bd.saveBank(bank);
+			JOptionPane.showMessageDialog(null, "Created "+bankName);
+		}
+		else {
+			JOptionPane.showMessageDialog(null, bankName+" already exists.");
 		}
 		
 		r.setB(bank==null);
