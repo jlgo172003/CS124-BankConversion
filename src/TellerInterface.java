@@ -24,15 +24,15 @@ public interface TellerInterface
                             String pin, 
                             double amount, Listener l );
                             
-    public void transfer(String srcAccountName, 
+    /*public void transfer(String srcAccountName, 
                             String srcPin,
                             String destAccountName, 
-                            double amount, Listener l );
+                            double amount, Listener l );*/
 
-    public boolean transfer(String srcAccountName, 
+    public void transfer(String srcAccountName, 
                             String srcPin,
                             String destinationBank,
                             String destAccountName, 
-                            double amount );
+                            double amount, Listener l );
 
 }

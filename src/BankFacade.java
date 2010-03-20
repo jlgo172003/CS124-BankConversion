@@ -182,6 +182,26 @@ public class BankFacade {
 		//updateData();
 		//return b;
 	}
+	
+	public void transfer(String bankName, String srcAccountName, String srcPin,
+			String destinationBank, String destAccountName, double amount, Listener l )
+	{
+		if (bankName==null) bankName=this.bankName;
+		String param = String.format( "Transfer %s %s %s %s %s %f", bankName, srcAccountName, srcPin, destinationBank, destAccountName,  amount );
+		Command c = factory.create( param );
+		c.setListener(l);
+		thread.addCommand(c);
+		//boolean b = (c.execute() ).getB();
+		//updateData();
+		//return b;
+	}
+	
+	public void checkBank(String bankName, Listener l) {
+		String param = String.format("CheckBank %s", bankName);
+		Command c = factory.create(param);
+		c.setListener(l);
+		thread.addCommand(c);
+	}
 
 	/**
 	 * Retrieves all accounts in database
@@ -200,6 +220,9 @@ public class BankFacade {
 			while( in.hasNextLine() ) {
 				
 				String param = in.nextLine();
+				param=param.trim();
+				if (param.startsWith("//")) continue;
+				
 				System.out.println( param );
 				//comm.add( factory.create( param ) );
 				thread.addCommand(factory.create( param ));

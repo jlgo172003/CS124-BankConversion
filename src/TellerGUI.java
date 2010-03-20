@@ -26,7 +26,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
     private JLabel logo = new JLabel("");
     
     private double amount, balance;
-    private String accountName, pin, destAccountName,tempName, tempPin;
+    private String accountName, pin, destAccountName,destinationBank,tempName, tempPin;
     private int check, action, point, ref;
     
     private Color color1 = new Color(109, 207, 246);//bg
@@ -176,8 +176,8 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
         if( (accountName != null) && (pin != null) )
         {
             check = 4;
-            screen.append("TRANSFER currently does not support multiple banks.\n");
-            screen.append("Please enter destination account name...\n");
+            //screen.append("TRANSFER currently does not support multiple banks.\n");
+            screen.append("Please enter destination bank name...\n");
             point = 1;
         }
     }
@@ -355,19 +355,26 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
         //Continuation of transferMoney()
         else if(check == 4)
         {
+        	if (point == 1) {
+                String x = input.getText();
+                destinationBank = x;
+                screen.append("Bank name is " + destinationBank + "\n");
+                screen.append("Please enter destination account name...\n");
+            	point++;
+        	}
+        	
         	//Gets supplied destination account name and prompts for amount to be transferred
-            if(point == 1)
+        	else if(point == 2)
             {
                 String x = input.getText();
                 destAccountName = x;
-                screen.append("Destination account name:" + destAccountName + "\n");
+                screen.append("Destination account name is " + destAccountName + "\n");
                 screen.append("Enter amount to be transfered " + "\n");
-                point = 2;
-                input.setText("");
+                point++;
             }
             
             //Gets supplied amount 
-            else if(point == 2)
+            else if(point == 3)
             {
                 try
                 {
@@ -394,7 +401,7 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                     		}
                     	};
                     	
-                        transfer(accountName, pin, destAccountName, amount, l );
+                        transfer(accountName, pin, destinationBank, destAccountName, amount, l );
                     }
                 }
          
@@ -405,8 +412,8 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
                                                    "Error!", JOptionPane.ERROR_MESSAGE );
                     screen.append("Transfer failed!\n");
                 }
-                input.setText("");
             }
+            input.setText("");
 
         }
         
@@ -671,24 +678,23 @@ public class TellerGUI extends JFrame implements ActionListener, TellerInterface
 	 * Transfers a specified amount to a supplied destAccountName given a 
 	 * destinationBank
 	 */
-    public boolean transfer(String srcAccountName, 
+    public void transfer(String srcAccountName, 
                             String srcPin,
                             String destinationBank,
                             String destAccountName, 
-                            double amount )
+                            double amount , Listener l)
     {
-        screen.append("MULTIPLE BANKS NOT CURRENTLY SUPPORTED\n");
-        return false;
+    	bankdriver.transfer(null,srcAccountName, srcPin, destinationBank, destAccountName, amount, l);
     }
     
     /**
 	 * Transfers a specified amount to a supplied destAccountName
 	 */
-    public void transfer(String srcAccountName, 
+    /*public void transfer(String srcAccountName, 
                             String srcPin, 
                             String destAccountName, 
                             double amount, Listener l )
     {
         bankdriver.transfer(null,srcAccountName, srcPin, destAccountName, amount, l);
-    }
+    }*/
 }

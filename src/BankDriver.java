@@ -69,10 +69,21 @@ public class BankDriver
 		facade.withdraw(bankName, accountName, pin, amount, l );
 	}
 
-	public void transfer(String bankName,  String srcAccountName, String srcPin,
+	/*public void transfer(String bankName,  String srcAccountName, String srcPin,
 		             String destAccountName, double amount, Listener l )
 	{
 		facade.transfer(bankName, srcAccountName, srcPin, destAccountName, amount, l );
+	}*/
+	
+	public void transfer(String bankName,  String srcAccountName, String srcPin,
+            		String destinationBank, String destAccountName, double amount, Listener l )
+	{
+		facade.transfer(bankName, srcAccountName, srcPin, destinationBank, destAccountName, amount, l );
+	}
+	
+	public void checkBank(String bankName, Listener l)
+	{
+		facade.checkBank(bankName,l);
 	}
 	
 	public boolean checkAccount(String bankName, String name, String pin)

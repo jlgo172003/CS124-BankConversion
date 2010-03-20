@@ -11,6 +11,7 @@ public class SingletonFactory {
 	private RemoveBankAccount c_removebankaccount;
 	private CreateBank c_createbank;
 	private RemoveBank c_removebank;
+	private CheckBank c_checkbank;
 	
 	private SingletonFactory() {
 		c_getbalance = new GetBalance();
@@ -21,6 +22,7 @@ public class SingletonFactory {
 		c_removebankaccount = new RemoveBankAccount();
 		c_createbank = new CreateBank();
 		c_removebank = new RemoveBank();
+		c_checkbank = new CheckBank();
 	}
 
 	public static SingletonFactory getInstance() {
@@ -78,6 +80,11 @@ public class SingletonFactory {
 			RemoveBankAccount rba = (RemoveBankAccount) c_removebankaccount.clone();
 			rba.setParams( temp[1], temp[2] );
 			return rba;
+		}
+		else if( temp[0].equals( "CheckBank" ) ) {
+			CheckBank cb = (CheckBank) c_checkbank.clone();
+			cb.setParams( temp[1] );
+			return cb;
 		}
 		return null;
 		

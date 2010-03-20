@@ -8,9 +8,9 @@
 public interface AtmInterface
 {
     public String getATMID();
-    public double getBalance(String bankName,
+    /*public double getBalance(String bankName,
                              String accountName, 
-                             String pin );
+                             String pin );*/
 
     public void deposit(String bankName,
                            String accountName, 
@@ -21,17 +21,17 @@ public interface AtmInterface
                             String pin, 
                             double amount, Listener l );
                             
-    public void transfer(String bankName,
+    /*public void transfer(String bankName,
                             String srcAccountName, 
                             String srcPin,
                             String destAccountName, 
-                            double amount, Listener l );
+                            double amount, Listener l );*/
 
-    public boolean transfer(String bankName,
+    public void transfer(String bankName,
                             String srcAccountName, 
                             String srcPin,
                             String destinationBank,
                             String destAccountName, 
-                            double amount );
+                            double amount, Listener l );
 
 }
