@@ -4,7 +4,7 @@ public abstract class Command {
 	
 	private Listener listener = null;
 	public void setListener( Listener l ) {
-		this.listener = l;
+		if( listener != null ) this.listener = l;
 	}
 	
 	public void signal( Result r ) {
